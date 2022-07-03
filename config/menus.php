@@ -6,51 +6,52 @@ return [
         'url' => 'dashboard',
         'title' => 'Dashboard',
         'route' => 'dashboard',
-        'icon' => ''
+        'icon' => '',
     ],
     [
         'url' => 'orders',
         'title' => 'Orders',
         'route' => 'orders',
+        'permission' => 'read-orders',
         'icon' => '',
-        'badge' => ''
+        'badge' => true
     ],
     [
         'title' => 'products',
         'icon' => "fab fa-brands fa-buffer",
-        'permission' => '',
+        'permission' => 'read-product',
         'sub_menu' => [
             [
                 'url' => 'products',
                 'title' => 'Products',
                 'route' => 'products.index',
-                'permission' => ''
+                'permission' => 'read-product'
             ]
         ]
     ],
     [
         'title' => 'services',
         'icon' => "fab fa-brands fa-buffer",
-        'permission' => '',
+        'permission' => 'read-services',
         'sub_menu' => [
             [
                 'url' => 'services',
                 'title' => 'Services',
                 'route' => 'services.index',
-                'permission' => ''
+                'permission' => 'read-services'
             ]
         ],
     ],
     [
         'title' => 'pages',
         'icon' => "fab fa-brands fa-buffer",
-        'permission' => '',
+        'permission' => 'read-pages',
         'sub_menu' => [
             [
                 'url' => 'appearance/pages',
                 'title' => 'Pages',
                 'route' => 'pages.index',
-                'permission' => ''
+                'permission' => 'read-pages'
             ]
         ],
     ],

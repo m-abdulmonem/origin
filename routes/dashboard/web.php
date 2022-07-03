@@ -19,6 +19,7 @@ Route::group(["middleware" => ["auth"]], function () use ($prefix) {
     Route::view('/test', "welcome")->name(str_replace(".", "", $prefix));
     Route::get('/collection', function (){
 
+        dd((string)(\App\Models\Product\Orders::where("status","pending")->count()));
 //        dd(\Illuminate\Support\Facades\Config::get("menus"));
         $collect = collect([
             [

@@ -1,10 +1,10 @@
 <?php
 
+use App\Models\Product\Orders;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\UrlGenerator;
 use Illuminate\Support\Facades\Config;
-
 if (!function_exists("is_email")) {
     function is_email($var)
     {
@@ -525,38 +525,47 @@ if (!function_exists("checkbox_val_bool")) {
 
 
 if (!function_exists("tree_menu")) {
-    function tree_menu($title, $icon, $sub_menu = null, $url = null, $route = null, $badge = null): string
+    function tree_menu($title, $icon, $sub_menu = null, $options = []): string
     {
+//        $url = null, $route = null, $badge = null
 
         $urls = $sub_menu ? groupArr($sub_menu, 'url') : [];
 
         $open_class = $sub_menu ? active_menu_any($urls, 0) : null;
-        $active_class = $sub_menu ? active_menu_any($urls, 1) : active_menu($url, 1);
 
-        $single_menu_url = $sub_menu ? "#" : route($route);
+        $active_class = $sub_menu ? active_menu_any($urls, 1) : active_menu($options['url'], 1);
 
-        $html = '<li class="nav-item ' . $open_class . '">';
-        $html .= '<a href="' . $single_menu_url . '" class="nav-link ' . $active_class . '">';
-        $html .= '<i class="nav-icon ' . $icon . '"></i>';
-        $html .= '<p>';
-        $html .= trans(ucfirst($title));
-        $html .= $sub_menu ? '<i class="right fas fa-angle-left"></i>' : null;
-        $html .= $badge ? '<span class="badge badge-info right">' . $badge . '</span>' : null;
-        $html .= '</p>';
-        $html .= '</a>';
-        if ($sub_menu) {
-            $html .= '<ul class="nav nav-treeview">';
-            foreach (groupArr($sub_menu, 'route') as $key => $route) {
-                $html .= '<li class="nav-item">';
-                $html .= '<a href="' . route($route) . '" class="nav-link ' . active_menu($urls[$key], 1) . '">';
-                $html .= '<i class="far fa-circle nav-icon"></i>';
-                $html .= '<p>' . trans(ucfirst(groupArr($sub_menu, 'title')[$key])) . '</p>';
-                $html .= '</a>';
-                $html .= '</li>';
+        $single_menu_url = $sub_menu ? "#" : route($options['route']);
+
+        $html = "";
+        $perm = $options['permission']? auth()->user()->hasPermission($options['permission']) : true;
+        if ($perm){
+            $html .= '<li class="nav-item ' . $open_class . '">';
+            $html .= '<a href="' . $single_menu_url . '" class="nav-link ' . $active_class . '">';
+            $html .= '<i class="nav-icon ' . $icon . '"></i>';
+            $html .= '<p>';
+            $html .= trans(ucfirst($title));
+            $html .= $sub_menu ? '<i class="right fas fa-angle-left"></i>' : null;
+            $html .= $options['badge'] && orders_count() > 0 ? '<span class="badge badge-info right">' . orders_count() . '</span>' : null;
+            $html .= '</p>';
+            $html .= '</a>';
+            if ($sub_menu) {
+                $html .= '<ul class="nav nav-treeview">';
+                foreach (groupArr($sub_menu, 'route') as $key => $route) {
+                    $perm = groupArr($sub_menu, 'permission')[$key];
+                    if ($perm && auth()->user()->hasPermission($perm)) {
+                        $html .= '<li class="nav-item">';
+                        $html .= '<a href="' . route($route) . '" class="nav-link ' . active_menu($urls[$key], 1) . '">';
+                        $html .= '<i class="far fa-circle nav-icon"></i>';
+                        $html .= '<p>' . trans(ucfirst(groupArr($sub_menu, 'title')[$key])) . '</p>';
+                        $html .= '</a>';
+                        $html .= '</li>';
+                    }
+                }
+                $html .= '</ul>';
             }
-            $html .= '</ul>';
+            $html .= '</li>';
         }
-        $html .= '</li>';
 
         return $html;
     }
@@ -566,20 +575,30 @@ if (!function_exists("get_dashboard_menu")) {
     function get_dashboard_menu(): string
     {
         $menus = Config::get("menus");
+
         $html = "";
 
         foreach ($menus as $menu) {
-            $sub = array_key_exists("sub_menu", $menu) ? $menu['sub_menu'] : null;
 
-            $url = array_key_exists("url", $menu) ? $menu['url'] : null;
+            $options = [
+                'badge' => menu_key_exists($menu, "badge"),
+                'route' => menu_key_exists($menu, "route"),
+                'url' => menu_key_exists($menu, "url"),
+                'permission' => menu_key_exists($menu,'permission')
+            ];
 
-            $route = array_key_exists("route", $menu) ? $menu['route'] : null;
-
-            $badge = array_key_exists("badge", $menu) ? $menu['badge'] : null;
-
-            $html .= tree_menu(title: $menu['title'], icon: $menu['icon'], sub_menu: $sub, url: $url, route: $route, badge: $badge);
+            $html .= tree_menu(title: $menu['title'], icon: $menu['icon'], sub_menu: menu_key_exists($menu, "sub_menu"), options: $options);
         }
+
         return $html;
+    }
+}
+if (!function_exists("menu_key_exists")) {
+
+    function menu_key_exists($menu, $key)
+    {
+
+        return array_key_exists($key, $menu) ? $menu[$key] : null;
     }
 }
 
@@ -594,4 +613,12 @@ if (!function_exists("groupArr")) {
         });
         return $grouped->get("grouped")->all();
     }
+}
+
+if (! function_exists("orders_count")){
+
+    function orders_count(){
+        return (string)Orders::where("status","pending")->count();
+    }
+//
 }

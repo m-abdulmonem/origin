@@ -2,14 +2,22 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
-use App\Models\Role;
 use App\Models\Permission;
+use App\Models\Role;
 use App\Models\User;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Config;
+use function str_replace;
 
 class PermissionsSeeder extends Seeder
 {
+    private $admin;
+
+    public function __construct()
+    {
+        $this->admin = User::find(1);
+    }
+
     /**
      * Run the database seeds.
      *
@@ -17,49 +25,46 @@ class PermissionsSeeder extends Seeder
      */
     public function run()
     {
-
-        $admin = User::find(1);
-        $perArr =  ['c','r','u','d','v'];
-        $data = [
-            'superAdmin' => [
-                'product' => $perArr,
-                'pages' => $perArr,
-                'services' => $perArr
-            ],
-        ];
+        $data = Config::get("permissions");
 
 
         foreach ($data as $role => $permissions) {
-            $ucRole = ucfirst(\str_replace("_"," ", $role));
+            $ucRole = ucfirst(str_replace("_", " ", $role));
 
             $createRole = Role::create([
                 'name' => $role,
                 'display_name' => $ucRole,
                 'description' => "allow $role"
             ]);
-            $admin->attachRole($createRole);
-            foreach ($permissions as $name => $permission) {
-                foreach ($permission as $perm) {
-                    $permName =  $this->handlePermiisionName($perm);
+            $this->admin->attachRole($createRole);
 
-                    $createdPerm = Permission::create([
-                        'name' => "$permName-$name",
-                        'display_name' => ucfirst($permName) . " " . ucfirst($name),
-                        'description' => ""
-                    ]);
+            $this->createPermission($permissions, $createRole);
+        }
+    }
 
-                    $createRole->attachPermission($createdPerm);
-                    $admin->attachPermission($createdPerm);
-                }
+    private function createPermission($permissions, $role)
+    {
+        foreach ($permissions as $name => $permission) {
+            foreach ($permission as $perm) {
+                $permName = $this->handlePermiisionName($perm);
+
+                $createdPerm = Permission::create([
+                    'name' => "$permName-$name",
+                    'display_name' => ucfirst($permName) . " " . ucfirst($name),
+                    'description' => ""
+                ]);
+
+                $role->attachPermission($createdPerm);
+                $this->admin->attachPermission($createdPerm);
             }
         }
     }
 
     private function handlePermiisionName($perm)
     {
-        $perms = ['c'=>'create','r'=>'read','u'=>'update','d'=>'delete','v'=>'view'];
+        $perms = ['c' => 'create', 'r' => 'read', 'u' => 'update', 'd' => 'delete', 'v' => 'view'];
 
-        return \str_replace($perm,$perms[$perm],$perm);
+        return str_replace($perm, $perms[$perm], $perm);
     }
 
 }
