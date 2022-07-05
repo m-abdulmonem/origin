@@ -74,7 +74,7 @@ class ServiceController extends Controller
     public function json(Request $request)
     {
         if ($request->ajax()) {
-            return datatables()->of(Service::all())
+            return datatables()->of(Service::orderByDesc("id")->get())
                 ->addIndexColumn()
                 ->addColumn('title', function ($data) {
                     return "<a class='text-primary' href='" . route("services.edit", $data->id) . "'>" . $data->title . "</a>";

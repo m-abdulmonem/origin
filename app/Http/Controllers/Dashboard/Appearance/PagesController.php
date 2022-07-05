@@ -150,7 +150,7 @@ class PagesController extends Controller
     public function json(Request  $request)
     {
         if ($request->ajax()) {
-            return datatables()->of(Page::all())
+            return datatables()->of(Page::orderByDesc("id")->get())
                 ->addIndexColumn()
                 ->addColumn('title', function ($data) {
                     return "<a class='text-primary' href='".route("pages.edit",$data->id)."'>".$data->title."</a>";

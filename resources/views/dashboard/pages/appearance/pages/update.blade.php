@@ -141,6 +141,31 @@
                 <!-- ./card -->
                 <div class="card">
                     <div class="card-header">
+                        <h3 class="title-header">{{__("Related Service")}}</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <div class="col-12">
+                            <div class="form-group ">
+                                @php $services = \App\Models\Service\Service::all()->pluck("title","id") @endphp
+                                <label for="service_id">{{ __('Select Related Service') }}</label>
+                                <select name="service_id" id="service_id"
+                                        class="form-control @error('services') is-invalid @enderror">
+                                    <option value="">{{ __('Select Related Service') }}</option>
+                                    {!! select_options($services,"services",$page->service_id) !!}
+                                </select>
+                                @error('services')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        <!-- ./col-12 -->
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- ./card -->
+                <div class="card">
+                    <div class="card-header">
                         <h3 class="title-header">Featured Image</h3>
                     </div>
                     <!-- /.card-header -->
@@ -251,10 +276,12 @@
                 e.preventDefault();
                 let formData = new FormData(this);
 
-                const js= (editor.getJs() != null) ? `\<script>${editor.getJs()}<script>` : '',
-                    content = `<style>${editor.getCss()}</style> ${editor.getHtml()}`;
+                // const js= (editor.getJs() != null) ? `\<script>${editor.getJs()}<script>` : '',
+                //     content = `<style>${editor.getCss()}</style> ${editor.getHtml()}`;
 
-                formData.append("content",content);
+                formData.append("content",editor.getHtml());
+                formData.append("js",editor.getJs());
+                formData.append("css",editor.getCss());
 
                 $.ajax({
                     type:'POST',

@@ -8,5 +8,6 @@ return [
         'pages' => $perArr,
         'services' => $perArr,
         'orders' => $perArr,
+        'categories' => $perArr,
     ]
 ];

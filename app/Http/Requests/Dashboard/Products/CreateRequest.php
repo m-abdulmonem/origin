@@ -45,7 +45,7 @@ class CreateRequest extends FormRequest
             'buy_price'=> \trans("Buy Price"),
             'sale_price'=> \trans("Sale Price"),
             'quntity'=> \trans("Quntity"),
-            'categories'=> \trans("Product Categories"),
+            'categories'=> \trans("Product categories"),
         ];
     }
 }

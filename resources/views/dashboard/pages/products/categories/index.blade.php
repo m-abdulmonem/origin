@@ -8,19 +8,22 @@
 
             <div class="card">
                 <div class="card-header">
-                    <button class="btn btn-info" type="button" data-toggle="modal" data-target="#serviceModel"><i class="fa fa-plus"></i> {{ __("Create Service") }}</button>
+                    <div class="btn btn-info" href="{{ route("categories.create") }}" data-toggle="modal"
+                         data-target="#categoryModel"><i class="fa fa-plus"></i> @lang("Create Menu")</div>
 
-                    <button class="btn btn-secondary btn-refresh"  type="button"><i class="fa fa-redo-alt"></i> {{ __("Refresh") }}</button>
+                    <button class="btn btn-secondary btn-refresh"  type="button"><i class="fa fa-redo-alt"></i> @lang("Refresh")</button>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <table id="servicesTable" class="table table-bordered table-striped">
+                    <table id="categoriesTable" class="table table-bordered table-striped">
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>{{ __("Title")}}</th>
-                            <th>{{ __("Description")}}</th>
-                            <th>{{ __("Actions") }}</th>
+                            <th>@lang("Title")</th>
+                            <th>@lang("Link")</th>
+                            <th>@lang("Submenu")</th>
+                            <th>@lang("Description")</th>
+                            <th>@lang("Actions")</th>
                         </tr>
                         </thead>
 
@@ -33,18 +36,19 @@
         <!-- /.col -->
     </div>
     <!-- /.row -->
-    @include('dashboard.pages.services.model')
-
+    @include('dashboard.pages.products.categories.model')
     @push("js")
         {!! datatable_files() !!}
         <script >
 
-            $("#servicesTable").table({
+            $("#categoriesTable").table({
                 columns: [
                     {data: 'title', name: 'title'},
+                    {data: 'link', name: 'link'},
+                    {data: 'subcategory', name: 'subcategory'},
                     {data: 'description', name: 'description'},
                 ],
-                url: "{{ route("services.json.index") }}",
+                url: "{{ route("categories.json.index") }}",
                 actionColumnWidth: "250px",
             });
         </script>

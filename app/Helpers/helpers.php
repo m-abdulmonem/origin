@@ -5,6 +5,10 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\UrlGenerator;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Route;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 if (!function_exists("is_email")) {
     function is_email($var)
     {
@@ -77,21 +81,46 @@ if (!function_exists('get_breadcrumb')) {
      */
     function get_breadcrumb($title = null): ?string
     {
-        $pages = array_merge(_breadcrumb_pages(), [$title]);
+        $pages = _breadcrumb_pages();
+
+        $html = "";
 
         if (request()->segment(1) == "dashboard") {
-            echo '<li class="breadcrumb-item active"><a href="' . url('/') . '">Home</a></li>';
+            $html .= '<li class="breadcrumb-item active"><a href="' . route('dashboard') . '">Home</a></li>';
         }
 
-        for ($i = 0; $i < count($pages); $i++) {
-            if ($i != count($pages) - 1) {
-                $url = url("dashboard/" . request()->segment($i + 2) . "/");
+        $prev = '';
 
-                echo "<li class='breadcrumb-item'><a href='$url'>" . ucfirst($pages[$i]) . "</a></li>";
-            }
+        foreach ($pages as $page){
+
+            $url = $prev ? "$prev/$page" : $page."s";
+
+            $prev = $page;
+
+            $response = checkRoute("dashboard/$url") ? url("dashboard/$url") : "#";
+
+            $a = strtolower($title) != $page ? "<a href='$response'>" . ucfirst($page) . "</a>" : $title;
+
+            $html .= "<li class='breadcrumb-item'>$a</li>";
         }
-        echo "<li class='breadcrumb-item'>" . ucfirst($title) . "</li>";
-        return null;
+
+
+        return strtolower($title) == $prev ? $html : $html . "<li class='breadcrumb-item'>" . ucfirst($title) . "</li>";
+    }
+}
+
+if (! function_exists("checkRoute")){
+    function checkRoute($route): bool
+    {
+        $routes = Route::getRoutes();
+        $request = Request::create($route);
+        try {
+            $routes->match($request);
+            return true;
+        }
+        catch (NotFoundHttpException $e){
+            return false;
+        }
     }
 }
 
@@ -111,7 +140,7 @@ if (!function_exists("_breadcrumb_pages")) {
         /**
          * /[0-9]/
          */
-        $pages = preg_replace('/d/', '', $pages);
+//        $pages = preg_replace('/d/', '', $pages);
 
         return explode("/", trim($pages, '/'));
     }

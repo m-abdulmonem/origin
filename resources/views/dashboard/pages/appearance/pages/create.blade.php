@@ -314,11 +314,13 @@
             $("form").submit(function (e) {
                 e.preventDefault();
 
-                const js= (editor.getJs() != null) ? `\<script>${editor.getJs()}<\/script>` : '',
-                    content = `<style>${editor.getCss()}</style> ${editor.getHtml()} ${js}`;
+                // const js= (editor.getJs() != null) ? `\<script>${editor.getJs()}<\/script>` : '',
+                //     content = `<style>${editor.getCss()}</style> ${editor.getHtml()} ${js}`;
 
                 let formData = new FormData(this);
-                formData.append("content",content)
+                formData.append("content",editor.getHtml())
+                formData.append("js",editor.getJs())
+                formData.append("css",editor.getCss())
                 $.ajax({
                     type:'POST',
                     url: "{{ route("pages.store") }}",

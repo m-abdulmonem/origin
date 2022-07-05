@@ -17,7 +17,9 @@ return new class extends Migration
             $table->id();
 
             $table->text("title");
-            $table->text("content")->nullable();
+            $table->longText("content")->nullable();
+            $table->longText("js")->nullable();
+            $table->longText("css")->nullable();
             $table->text("permalink")->nullable();
             $table->text("featured_image")->nullable();
             $table->text("password")->nullable();

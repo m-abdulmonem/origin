@@ -17,7 +17,7 @@ return [
         'badge' => true
     ],
     [
-        'title' => 'products',
+        'title' => 'product',
         'icon' => "fab fa-brands fa-buffer",
         'permission' => 'read-product',
         'sub_menu' => [
@@ -28,6 +28,13 @@ return [
                 'permission' => 'read-product'
             ]
         ]
+    ],
+    [
+        'url' => 'products/categories',
+        'title' => 'Categories',
+        'route' => 'categories.index',
+        'permission' => 'read-categories',
+        'icon' => '',
     ],
     [
         'title' => 'services',

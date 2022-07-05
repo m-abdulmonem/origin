@@ -3,8 +3,8 @@
 //namespace App\Http\Controllers\Dashboard\Appearance;
 //
 //use App\Http\Controllers\Controller;
-//use App\Http\Requests\Dashboard\Appearance\Menus\CreateMenuRequest;
-//use App\Http\Requests\Dashboard\Appearance\Menus\UpdateMenuRequest;
+//use App\Http\Requests\Dashboard\Appearance\Menus\CreateRequest;
+//use App\Http\Requests\Dashboard\Appearance\Menus\UpdateRequest;
 //use App\Models\Dashboard\Appearance\Menus;
 //use Illuminate\Contracts\Foundation\Application;
 //use Illuminate\Contracts\View\Factory;
@@ -52,11 +52,11 @@
 //    /**
 //     * Store a newly created resource in storage.
 //     *
-//     * @param CreateMenuRequest $request
+//     * @param CreateRequest $request
 //     * @param Menus $menu
 //     * @return Application|RedirectResponse|Redirector
 //     */
-//    public function store(CreateMenuRequest $request, Menus $menu)
+//    public function store(CreateRequest $request, Menus $menu)
 //    {
 //        $menu->create($request->all());
 //
@@ -93,11 +93,11 @@
 //    /**
 //     * Update the specified resource in storage.
 //     *
-//     * @param UpdateMenuRequest $request
+//     * @param UpdateRequest $request
 //     * @param Menus $menus
 //     * @return Application|Redirector|RedirectResponse
 //     */
-//    public function update(UpdateMenuRequest $request, Menus $menu)
+//    public function update(UpdateRequest $request, Menus $menu)
 //    {
 //        $menu->update($request->all());
 //

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string("image")->nullable();
             $table->string("cover")->nullable();
             $table->boolean("is_menu")->default(false);
-            $table->foreignId("category_id")->constrained();
+            $table->foreignId("category_id")->nullable()->constrained();
             $table->timestamps();
         });
     }

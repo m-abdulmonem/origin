@@ -6,6 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\Products\CreateRequest;
 use App\Http\Requests\Dashboard\Products\UpdateRequest;
 use App\Models\Product\Product;
+use Exception;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class ProductsController extends Controller
@@ -23,7 +29,7 @@ class ProductsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
     public function index()
     {
@@ -33,29 +39,14 @@ class ProductsController extends Controller
             'title' => 'Products'
         ];
 
-        return $this->view("index",$data);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $this->can("create");
-
-        $data = [
-            'title' => 'Create Product'
-        ];
-        return $this->view("create",$data);
+        return $this->view("index", $data);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param CreateRequest $request
+     * @return RedirectResponse
      */
     public function store(CreateRequest $request)
     {
@@ -69,17 +60,32 @@ class ProductsController extends Controller
             'new' => checkbox_val_bool($request->new),
         ];
 
-        $product = Product::create(request_merge($data,$request));
+        $product = Product::create(request_merge($data, $request));
 
 
-        return $this->back("Product",$product->title);
+        return $this->back("Product", $product->title);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return Application|Factory|View
+     */
+    public function create()
+    {
+        $this->can("create");
+
+        $data = [
+            'title' => 'Create Product'
+        ];
+        return $this->view("create", $data);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Product $product
+     * @return Application|Factory|View
      */
     public function show(Product $product)
     {
@@ -90,14 +96,14 @@ class ProductsController extends Controller
             'product' => $product
         ];
 
-        return $this->view("view",$data);
+        return $this->view("view", $data);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Product $product
+     * @return Application|Factory|View
      */
     public function edit(Product $product)
     {
@@ -108,17 +114,17 @@ class ProductsController extends Controller
             'product' => $product
         ];
 
-        return $this->view("update",$data);
+        return $this->view("update", $data);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param UpdateRequest $request
+     * @param Product $product
+     * @return RedirectResponse
      */
-    public function update(UpdateRequest $request, Product $product)
+    public function update(UpdateRequest $request, Product $product): RedirectResponse
     {
         $this->can("update");
 
@@ -130,58 +136,63 @@ class ProductsController extends Controller
             'new' => checkbox_val_bool($request->new),
         ];
 
-        $product->update(request_merge($request->all(),$data));
+        $product->update(request_merge($request->all(), $data));
 
-        return $this->back("Product",$product->title,true);
+        return $this->back("Product", $product->title, true);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Product $product
+     * @return JsonResponse
      */
-    public function destroy(Product $product)
+    public function destroy(Product $product): JsonResponse
     {
         $this->can("delete");
+
         $product->delete();
 
         return response()->json(['status' => 1]);
     }
 
-
+    /**
+     * @param Request $request
+     * @return never
+     * @throws Exception
+     */
     public function json(Request $request)
     {
         if ($request->ajax()) {
-            return datatables()->of(Product::all())
+            return datatables()->of(Product::orderByDesc("id")->get())
                 ->addIndexColumn()
                 ->addColumn('code', function ($data) {
-                return "<a class='text-primary' href='" . route("products.edit", $data->id) . "'>" . $data->title . "</a>";
-            })
+                    return "<a class='text-primary' href='" . route("products.edit", $data->id) . "'>" . $data->title . "</a>";
+                })
                 ->addColumn('title', function ($data) {
-                return "<a class='text-primary' href='" . route("products.edit", $data->id) . "'>" . $data->title . "</a>";
-            })
+                    return "<a class='text-primary' href='" . route("products.edit", $data->id) . "'>" . $data->title . "</a>";
+                })
                 ->addColumn('buy_price', function ($data) {
-                return "<span >" . $data->sale_price . "</span>";
-            })
+                    return "<span >" . $data->sale_price . "</span>";
+                })
                 ->addColumn('sale_price', function ($data) {
-                return "<span >" . $data->sale_price . "</span>";
-            })
+                    return "<span >" . $data->sale_price . "</span>";
+                })
                 ->addColumn('quntity', function ($data) {
-                return "<span >" . $data->quntity . "</span>";
-            })
+                    return "<span >" . $data->quntity . "</span>";
+                })
                 ->addColumn('category', function ($data) {
-                return "<a href='" . route("users.show", $data->category->id) . "' class='text-blue'>" . $data->category->title . "</a>";
-            })
+                    return "<a href='" . route("users.show", $data->category->id) . "' class='text-blue'>" . $data->category->title . "</a>";
+                })
                 ->addColumn('user', function ($data) {
-                return "<a href='" . route("users.show", $data->user->id) . "' class='text-blue'>" . $data->user->name . "</a>";
-            })
+                    return "<a href='" . route("users.show", $data->user->id) . "' class='text-blue'>" . $data->user->name . "</a>";
+                })
                 ->addColumn('action', function ($data) use ($request) {
-                $route = route("products.edit", $data->id);
-                $btn = "<a class='btn btn-primary mr-1' title='Edit Page' href='$route'><i class='fa fa-edit'></i></a>";
-                $btn .= btn_delete("products", $data, "title");
-                return $btn;
-            })
+                    $route = route("products.edit", $data->id);
+                    $btn = "<a class='btn btn-primary mr-1' title='Edit Page' href='$route'><i class='fa fa-edit'></i></a>";
+                    $btn .= btn_delete("products", $data, "title");
+                    return $btn;
+                })
                 ->rawColumns(['action', 'title', 'image', 'status', 'user', 'parent'])
                 ->make(true);
         } //end if cond

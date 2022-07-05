@@ -26,6 +26,8 @@ class CreateRequest extends FormRequest
         return [
             'title'  => 'required|unique:pages,title',
             'content' => 'sometimes|nullable',
+            'js' => 'sometimes|nullable',
+            'css' => 'sometimes|nullable',
             'permalink' => 'sometimes|nullable',
             'status' => 'sometimes|nullable',
             'published_at' => 'sometimes|nullable',
@@ -44,6 +46,8 @@ class CreateRequest extends FormRequest
         return [
             'title'  => trans('Title'),
             'content' => trans('Content'),
+            'js' => trans('Javascript'),
+            'css' => trans('Css'),
             'permalink' => trans('Permalink'),
             'status' => trans('Status'),
             'published_at' => trans('Published At'),
