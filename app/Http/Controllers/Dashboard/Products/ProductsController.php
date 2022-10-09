@@ -163,6 +163,7 @@ class ProductsController extends Controller
      */
     public function json(Request $request)
     {
+
         if ($request->ajax()) {
             return datatables()->of(Product::orderByDesc("id")->get())
                 ->addIndexColumn()
@@ -178,14 +179,21 @@ class ProductsController extends Controller
                 ->addColumn('sale_price', function ($data) {
                     return "<span >" . $data->sale_price . "</span>";
                 })
-                ->addColumn('quntity', function ($data) {
-                    return "<span >" . $data->quntity . "</span>";
+                ->addColumn('quantity', function ($data) {
+                    return "<span >" . $data->quantity . "</span>";
                 })
                 ->addColumn('category', function ($data) {
-                    return "<a href='" . route("users.show", $data->category->id) . "' class='text-blue'>" . $data->category->title . "</a>";
+                    $categories = "";
+                    foreach ($data->categories()->get() as $category) {
+                        $categories .= "<a href='" . route("categories.show", $category->id) . "' class='badge badge-info'>" . ucwords($category->title) . "</a>";
+                    }
+
+                    return $categories;
+//                    return "<a href='" . route("users.show", $data->categories()->first()->id) . "' class='text-blue'>" . $data->category->title . "</a>";
                 })
                 ->addColumn('user', function ($data) {
-                    return "<a href='" . route("users.show", $data->user->id) . "' class='text-blue'>" . $data->user->name . "</a>";
+                    return "-";
+//                    return "<a href='" . route("users.show", $data->user_id) . "' class='text-blue'>" . $data->user->name . "</a>";
                 })
                 ->addColumn('action', function ($data) use ($request) {
                     $route = route("products.edit", $data->id);
@@ -193,7 +201,7 @@ class ProductsController extends Controller
                     $btn .= btn_delete("products", $data, "title");
                     return $btn;
                 })
-                ->rawColumns(['action', 'title', 'image', 'status', 'user', 'parent'])
+                ->rawColumns(['action', 'title', 'code', 'buy_price', 'user', 'sale_price', 'quantity', 'category'])
                 ->make(true);
         } //end if cond
         return abort(404);

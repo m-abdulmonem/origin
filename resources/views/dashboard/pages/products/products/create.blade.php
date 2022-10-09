@@ -33,8 +33,8 @@
                             <div class="form-group ">
                                 <label for="description">{{ __("Description") }}</label>
                                 <textarea class="form-control @error('Description') is-invalid @enderror"
-                                          id="description" placeholder="{{ __("Description") }}" name="Description"
-                                          value="">{{ old('Description') }}</textarea>
+                                          id="description" placeholder="{{ __("Description") }}"
+                                          name="Description">{{ old('Description') }}</textarea>
                                 @error('Description')
                                 <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
@@ -62,47 +62,48 @@
                 <!-- ./card -->
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="title-header">{{ __('Product Varients') }}</h3>
+                        <h3 class="title-header">{{ __('Product Variants') }}</h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <div class="col-12 varient-card">
-                            <div class="varient-tools"><i class="fas fa-times"></i></div>
+                        <div class="col-12 variant-card">
+                            <div class="variant-tools"><i class="fas fa-times"></i></div>
                             <div class="form-group ">
 
                                 <div class="row">
-                                    <div class="col-8"><label for="varientName">{{ __('Varient Name') }}</label><input
-                                                type="text"
-                                                class="form-control varient-name @error('varient_name') is-invalid @enderror"
-                                                id="varientName" placeholder="{{ __('Varient Name') }}"
-                                                name="varient_name[]">
+                                    <div class="col-8"><label for="variantName">{{ __('Variant Name') }}</label>
+                                        <input
+                                            type="text"
+                                            class="form-control variant-name @error('variant_name') is-invalid @enderror"
+                                            id="variantName" placeholder="{{ __('Variant Name') }}"
+                                            name="variant_name[]">
                                     </div>
                                     <div class="col-4">
                                         <div class="form-group">
-                                            <label for="varientType">{{ __('Varient type') }}</label>
-                                            <select name="varient-type" id="varientType" class="form-control">
-                                                @foreach(['checkboxs','selections',"options",'images'] as $item)
+                                            <label for="variantType">{{ __('Variant type') }}</label>
+                                            <select name="variant-type" id="variantType" class="form-control">
+                                                @foreach(['checkbox','selections',"options",'images'] as $item)
                                                     <option value="{{ $item }}">{{ ucfirst($item) }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                     </div>
                                 </div>
-                                @error('varient_name')
+                                @error('variant_name')
                                 <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
 
                                 <ul class="list-unstyled" style="padding: 12px 18px;">
-                                    <li class="varient-details">
+                                    <li class="variant-details">
                                         <div class="row">
                                             <div class="col-6">
                                                 <div class="form-group ">
-                                                    <label for="varientValue">{{ __('Varient Value') }}</label>
+                                                    <label for="variantValue">{{ __('Variant Value') }}</label>
                                                     <input type="text"
-                                                           class="form-control varient-value @error('varient_value') is-invalid @enderror"
-                                                           id="varientValue" placeholder="{{ __('Varient Value') }}"
-                                                           name="varient_value[]">
-                                                    @error('varient_value')
+                                                           class="form-control variant-value @error('variant_value') is-invalid @enderror"
+                                                           id="variantValue" placeholder="{{ __('Variant Value') }}"
+                                                           name="variant_value[]">
+                                                    @error('variant_value')
                                                     <div class="alert alert-danger">{{ $message }}</div>
                                                     @enderror
                                                 </div>
@@ -110,19 +111,20 @@
                                             <!-- ./col-6 -->
                                             <div class="col-5">
                                                 <div class="form-group ">
-                                                    <label for="varientQuntity">{{ __('Varient Quntity') }}</label>
+                                                    <label for="variantQuantity">{{ __('Variant Quantity') }}</label>
                                                     <input type="text"
-                                                           class="form-control varient-quntity @error('varient_quntity') is-invalid @enderror"
-                                                           id="varientQuntity" placeholder="{{ __('Varient Quntity') }}"
-                                                           name="varient_quntity[]">
-                                                    @error('varient_quntity')
+                                                           class="form-control variant-quantity @error('variant_quantity') is-invalid @enderror"
+                                                           id="variantQuantity"
+                                                           placeholder="{{ __('Variant Quantity') }}"
+                                                           name="variant_quantity[]">
+                                                    @error('variant_quantity')
                                                     <div class="alert alert-danger">{{ $message }}</div>
                                                     @enderror
 
                                                 </div>
                                             </div>
                                             <!-- ./col-5 -->
-                                            <div class="col-1 varient-row"><i class="fas fa-times"></i></div>
+                                            <div class="col-1 variant-row"><i class="fas fa-times"></i></div>
                                             <!-- ./col-5 -->
                                         </div>
                                     </li>
@@ -139,7 +141,7 @@
             <div class="col-4">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="title-header">{{ __('Price & Quntity') }}</h3>
+                        <h3 class="title-header">{{ __('Price & Quantity') }}</h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
@@ -169,11 +171,11 @@
                         <!-- ./col-12 -->
                         <div class="col-12">
                             <div class="form-group ">
-                                <label for="quntity">{{ __('Quntity') }}</label>
-                                <input type="text" class="form-control @error('quntity') is-invalid @enderror"
-                                       id="quntity" placeholder="{{ __('Quntity') }}" name="quntity"
-                                       value="{{ old('quntity') }}">
-                                @error('quntity')
+                                <label for="quantity">{{ __('Quantity') }}</label>
+                                <input type="text" class="form-control @error('quantity') is-invalid @enderror"
+                                       id="quantity" placeholder="{{ __('Quantity') }}" name="quantity"
+                                       value="{{ old('quantity') }}">
+                                @error('quantity')
                                 <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -195,7 +197,7 @@
                         <div class="col-md-12">
                             <div class="icheck-primary">
                                 <input type="checkbox" name="has_comments" id="has_comments"
-                                        {{ old('has_comments') ? 'checked' : '' }}>
+                                    {{ old('has_comments') ? 'checked' : '' }}>
                                 <label for="has_comments">
                                     {{ __('Allow Comments') }}
                                 </label>
@@ -205,7 +207,7 @@
                         <div class="col-md-12 mt-5">
                             <div class="icheck-primary">
                                 <input type="checkbox" name="has_reviews" id="has_reviews"
-                                        {{ old('has_reviews') ? 'checked' : '' }}>
+                                    {{ old('has_reviews') ? 'checked' : '' }}>
                                 <label for="has_reviews">
                                     {{ __('Allow Reviews') }}
                                 </label>
@@ -225,7 +227,7 @@
                         <div class="col-md-12">
                             <div class="icheck-primary">
                                 <input type="checkbox" name="new" id="new"
-                                        {{ old('new') ? 'checked' : '' }}>
+                                    {{ old('new') ? 'checked' : '' }}>
                                 <label for="new">
                                     {{ __('New Products') }}
                                 </label>
@@ -266,9 +268,8 @@
                     <!-- /.card-header -->
                     <div class="card-body">
                         <div class="col-md-12">
-
+                            <input type="hidden" name="media_ids">
                             <div class="btn btn-default btn-select-media">{{ __("Select Image") }}</div>
-
                         </div>
                         <!-- ./col-md-12 -->
                     </div>
@@ -283,44 +284,47 @@
     </form>
     <!-- /.row -->
 
+    @push("model") {{ \App\Models\Product\Product::class }} @endpush
     @include("dashboard.modals.select_media")
     @push('js')
         <script src="{{ admin_assets("select2.full.min.js") }}"></script>
         <!-- Select2 -->
         <script>
             var body = $("body");
-            body.on("change", ".varient-name", function (e) {
+            body.on("change", ".variant-name", function (e) {
                 var node = $(this).parent().parent().parent().parent();
-                if ($(this).val() != "") {
+                if ($(this).val() !== "") {
                     node.clone().insertAfter(node).find("input").val("")
                 } else {
                     node.next().remove()
                 }
             });
-            body.on("change", ".varient-value", function (e) {
-                var node = $(this).parent().parent().parent().parent(), name = node.parent().prev().val();
-                if ($(this).val() != "") {
+
+            body.on("change", ".variant-value", function (e) {
+                var node = $(this).parent().parent().parent().parent(),
+                    name = node.parent().prev().find("input[type=text]").val();
+                if ($(this).val() !== "") {
                     node.find("input:first").attr("name", `${name}[]`);
-                    node.find("input:last").attr("name", `${name}_quntity[]`)
+                    node.find("input:last").attr("name", `${name}_quantity[]`)
 
                     var newNode = node.clone().insertAfter(node).find("input").val("")
 
                     newNode.find("input:first").attr("name", `${name}[]`)
-                    newNode.find("input:last").attr("name", `${name}_quntity[]`)
+                    newNode.find("input:last").attr("name", `${name}_quantity[]`)
                 } else {
                     node.next().remove()
                 }
             });
 
-            body.on("click", ".varient-tools i", function () {
+            body.on("click", ".variant-tools i", function () {
 
-                if ($(".varient-card").length > 1) {
+                if ($(".variant-card").length > 1) {
                     $(this).parent().parent().remove();
                 }
             });
-            body.on("click", ".varient-row i", function () {
+            body.on("click", ".variant-row i", function () {
 
-                if ($(".varient-details").length > 1) {
+                if ($(".variant-details").length > 1) {
                     $(this).parent().parent().parent().remove();
                 }
             })
@@ -328,12 +332,12 @@
             //initialize select  plugin
             $("#category").select2({placeholder: "Select Category", "height": "auto"});
 
-            $("#sale_price,#buy_price,#quntity").change(function () {
+            $("#sale_price,#buy_price,#quantity").change(function () {
                 var sale = parseInt($("#sale_price").val()) ?? 0,
                     buy = parseInt($("#buy_price").val()) ?? 0,
-                    quntity = parseInt($("#quntity").val()) ?? 1;
+                    quantity = parseInt($("#quantity").val()) ?? 1;
 
-                $(".profit").text(`${(sale - buy) * quntity}$`)
+                $(".profit").text(`${(sale - buy) * quantity}$`)
             })
         </script>
     @endpush

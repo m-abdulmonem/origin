@@ -22,7 +22,7 @@
                             <th>{{ __("title")}}</th>
                             <th>{{ __("Buy Price")}}</th>
                             <th>{{ __("Sale Price")}}</th>
-                            <th>{{__("Quntity")}}</th>
+                            <th>{{__("Auantity")}}</th>
                             <th>{{__("category")}}</th>
                             <th>{{ __("Author") }}</th>
                             <th>{{ __("Actions") }}</th>
@@ -49,7 +49,7 @@
                     {data: 'title', name: 'title'},
                     {data: 'buy_price', name: 'buy_price'},
                     {data: 'sale_price', name: 'sale_price'},
-                    {data: 'quntity', name: 'quntity'},
+                    {data: 'quantity', name: 'quantity'},
                     {data: 'category', name: 'category'},
                     {data: 'user', name: 'user'},
                 ],

@@ -99,13 +99,13 @@ if (!function_exists('get_breadcrumb')) {
 
             $response = checkRoute("dashboard/$url") ? url("dashboard/$url") : "#";
 
-            $a = strtolower($title) != $page ? "<a href='$response'>" . ucfirst($page) . "</a>" : $title;
+            $a = strtolower($title) != $page ? "<a href='$response'>" . ucwords($page) . "</a>" : ucwords($title);
 
             $html .= "<li class='breadcrumb-item'>$a</li>";
         }
 
 
-        return strtolower($title) == $prev ? $html : $html . "<li class='breadcrumb-item'>" . ucfirst($title) . "</li>";
+        return strtolower($title) == $prev ? $html : $html . "<li class='breadcrumb-item'>" . ucwords($title) . "</li>";
     }
 }
 
@@ -141,6 +141,7 @@ if (!function_exists("_breadcrumb_pages")) {
          * /[0-9]/
          */
 //        $pages = preg_replace('/d/', '', $pages);
+        $pages = preg_replace('/[0-9]/', '', $pages);
 
         return explode("/", trim($pages, '/'));
     }

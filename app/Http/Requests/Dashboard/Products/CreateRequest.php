@@ -30,7 +30,7 @@ class CreateRequest extends FormRequest
             'url' => 'sometimes|nullable|string',
             'buy_price'=>'required|integer',
             'sale_price'=>'required|integer',
-            'quntity'=>'required|integer',
+            'quantity'=>'required|integer',
             'categories'=>'required',
         ];
     }
@@ -44,7 +44,7 @@ class CreateRequest extends FormRequest
             'url'=> \trans("Product Url"),
             'buy_price'=> \trans("Buy Price"),
             'sale_price'=> \trans("Sale Price"),
-            'quntity'=> \trans("Quntity"),
+            'quantity'=> \trans("Quantity"),
             'categories'=> \trans("Product categories"),
         ];
     }

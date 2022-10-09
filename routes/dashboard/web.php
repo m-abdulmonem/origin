@@ -24,7 +24,11 @@ Route::group(["middleware" => ["auth"]], function () use ($prefix) {
     });
 
     Route::get("orders", function () {
+        $file = \App\Models\Utils\Media::find(6)->path;
 
+        $path = (new MediaControllers())->public_path($file);
+
+        dd(is_file($path));
     })->name("orders");
 
     Route::group([], function () {
@@ -58,6 +62,7 @@ Route::group(["middleware" => ["auth"]], function () use ($prefix) {
 
         Route::get('media', [MediaControllers::class, "media"])->name("dashboard.media.index");
         Route::post('upload', [MediaControllers::class, "upload"])->name("dashboard.media.upload");
+        Route::delete('{media}', [MediaControllers::class, "destroy"])->name("dashboard.media.destroy");
     });
 
     //logout

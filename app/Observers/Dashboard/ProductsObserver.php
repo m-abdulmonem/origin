@@ -3,33 +3,41 @@
 namespace App\Observers\Dashboard;
 
 use App\Http\Controllers\Dashboard\Utils\MediaControllers;
+use App\Models\Product\Category\Category;
 use App\Models\Product\Product;
+use App\Models\Product\ProductGroup;
 use App\Models\Product\ProductGroupSlug;
 
 class ProductsObserver
 {
-    public function created(Product $product)
+
+    /**
+     *
+     * @param Product $product
+     * @return void
+     */
+    public function created(Product $product): void
     {
         $request = request();
 
 
-        MediaControllers::addMedia($request,$product);
+        MediaControllers::attachMedia($request,$product);
 
         $product->categories()->sync($request->categories);
 
 
-        if (($varients = $request->varient_name) != null) {
+        if (($variants = $request->variant_name) != null) {
 
-            foreach ($varients as $varient) {
-                if ($varient !=null) {
-                    $createdVar = $product->varients()->create([
-                        'title' => $varient,
+            foreach ($variants as $variant) {
+                if ($variant !=null) {
+                    $createdVar = $product->variants()->create([
+                        'title' => $variant,
                         'description' => "",
                         'type'=> 'options'
                     ]);
-                foreach ($request->$varient as $key => $value) {
+                foreach ($request->$variant as $key => $value) {
                     if ($value != null) {
-                         $qun = $varient."_quntity";
+                         $qun = $variant."_quantity";
 
                     $createdVar->slugs()->create([
                         'slug' => $value,
@@ -42,40 +50,42 @@ class ProductsObserver
         }
     }
 
-        /**
+    /**
      * Handle the category "updated" event.
      *
-     * @param Category $category
+     * @param Product $product
      * @return void
      */
     public function updated(Product $product)
     {
 
-        MediaControllers::addMedia($request,$product);
+        $request = request();
+
+        MediaControllers::attachMedia($request,$product);
 
         $product->categories()->toggle($request->categories);
 
-         if (($varients = $request->varient_name) != null) {
+         if (($variants = $request->varient_name) != null) {
 
-            foreach ($varients as $varient) {
-                if ($varient !=null) {
-                    $varientData = [
-                        'title' => $varient,
+            foreach ($variants as $variant) {
+                if ($variant !=null) {
+                    $variantData = [
+                        'title' => $variant,
                         'description' => "",
                         'type'=> 'options'
                     ];
 
-                    $productGroup = ProductGroup::where("title",$varient)->where("product_id",$product->id)->first();
+                    $productGroup = ProductGroup::where("title",$variant)->where("product_id",$product->id)->first();
 
                     if ($productGroup) {
-                        $productGroup->udpate($varientData);
+                        $productGroup->udpate($variantData);
                     }else{
-                        $createdVar = $product->varients()->create($varientData);
+                        $createdVar = $product->varients()->create($variantData);
                     }
-                foreach ($request->$varient as $key => $value) {
+                foreach ($request->$variant as $key => $value) {
                     if ($value != null) {
 
-                         $qun = $varient."_quntity";
+                         $qun = $variant."_quantity";
 
                          $slug = ProductGroupSlug::where("slug",$value)->where("product_group_id",)->first();
 
