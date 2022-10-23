@@ -4,7 +4,7 @@
         <!-- Select2 -->
         <link rel="stylesheet" href="{{ admin_assets("select2.min.css") }}">
     @endpush
-        <form action="{{ route("menus.update",$menu->id) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route("dashboard.appearance.menus.update",$menu->id) }}" method="POST" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-8">
                     @csrf
@@ -13,14 +13,14 @@
                         <div class="card-header">
                             <h3 class="card-title ">Menus content</h3>
                             <button class="btn btn-danger btn-delete float-right" type="button"
-                                    data-url="{{ route("menus.destroy",$menu->id) }}"
+                                    data-url="{{ route("dashboard.appearance.menus.destroy",$menu->id) }}"
                                     data-name="{{  $menu->name }}" data-token="{{ csrf_token() }}"
                                     data-title="Are you sure to delete "
                                     data-text="Delete {{ $menu->title }}"
-                                    data-back="{{ route("menus.index") }}">
+                                    data-back="{{ route("dashboard.appearance.menus.index") }}">
                                 <a><i class="fa fa-trash"></i> Delete</a>
                             </button>
-                            <a href="{{ route("menus.create") }}" class="btn btn-info float-right ml-1 mr-1"><i class="fa fa-plus"></i> New Menu</a>
+                            <a href="{{ route("dashboard.appearance.menus.create") }}" class="btn btn-info float-right ml-1 mr-1"><i class="fa fa-plus"></i> New Menu</a>
                             <button type="submit" class="btn btn-primary float-right "><i class="fa fa-save"></i> Save</button>
                         </div>
                         <!-- /.card-header -->
@@ -48,7 +48,7 @@
                             <!-- ./col-12 -->
                             <div class="col-12">
                                 <div class="form-group ">
-                                    @php use App\Models\Dashboard\Appearance\Menus; $menus = Menus::all()->pluck("title","id") @endphp
+                                    @php $menus = \App\Models\Appearance\Menus::all()->pluck("title","id") @endphp
                                     <label for="parent">Select Parent Menu</label>
                                     <option value="">Select Parent Menu</option>
                                     <select name="parent" id="parent" class="form-control @error('parent') is-invalid @enderror">

@@ -8,7 +8,7 @@
 
             <div class="card">
                 <div class="card-header">
-                    <a class="btn btn-info" href="{{ route("menus.create") }}"><i class="fa fa-plus"></i> Create Menu</a>
+                    <a class="btn btn-info" href="{{ route("dashboard.appearance.menus.create") }}"><i class="fa fa-plus"></i> Create Menu</a>
 
                     <button class="btn btn-secondary btn-refresh"  type="button"><i class="fa fa-redo-alt"></i> Refresh</button>
                 </div>
@@ -47,7 +47,7 @@
                     {data: 'submenu', name: 'submenu'},
                     {data: 'description', name: 'description'},
                 ],
-                url: "{{ route("appearance.menus.index") }}",
+                url: "{{ route("dashboard.appearance.menus.json.index") }}",
                 actionColumnWidth: "250px",
             });
         </script>

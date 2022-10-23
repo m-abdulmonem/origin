@@ -11,7 +11,7 @@
         <link rel="stylesheet" href="{{ admin_assets("select2.min.css") }}">
         <link rel="stylesheet" href="{{ admin_assets("daterangepicker.css") }}">
     @endpush
-    <form action="{{ route("pages.store") }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route("dashboard.appearance.pages.store") }}" method="POST" enctype="multipart/form-data">
         <div class="row">
             <div class="col-10">
                 @csrf
@@ -323,7 +323,7 @@
                 formData.append("css",editor.getCss())
                 $.ajax({
                     type:'POST',
-                    url: "{{ route("pages.store") }}",
+                    url: "{{ route("dashboard.appearance.pages.store") }}",
                     data: formData,
                     dataType: "JSON",
                     processData: false,

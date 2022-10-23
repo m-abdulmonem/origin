@@ -8,7 +8,7 @@
 
             <div class="card">
                 <div class="card-header">
-                    <a class="btn btn-info" href="{{ route("pages.create") }}"><i class="fa fa-plus"></i> {{__("Create Page")}}</a>
+                    <a class="btn btn-info" href="{{ route("dashboard.appearance.pages.create") }}"><i class="fa fa-plus"></i> {{__("Create Page")}}</a>
 
                     <button class="btn btn-secondary btn-refresh"  type="button"><i class="fa fa-redo-alt"></i> {{__("Refresh")}}</button>
                 </div>
@@ -49,7 +49,7 @@
                     {data: 'user', name: 'user'},
                     {data: 'parent', name: 'parent'},
                 ],
-                url: "{{ route("pages.json.index") }}",
+                url: "{{ route("dashboard.appearance.pages.json.index") }}",
                 actionColumnWidth: "250px",
             });
         </script>

@@ -10,7 +10,7 @@
 
         <link rel="stylesheet" href="{{ admin_assets("daterangepicker.css") }}">
     @endpush
-    <form action="{{ route("pages.update",$page->id) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route("dashboard.appearance.pages.update",$page->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method("PUT")
         <div class="row">
@@ -22,13 +22,13 @@
             <!-- /.col -->
             <div class="col-2">
                 <button type="submit" class="btn btn-primary btn-block mb-4">Save Page</button>
-                <a href="{{ route("pages.create") }}" class="btn btn-info w-100 mb-4"><i class="fa fa-plus"></i> New Page</a>
+                <a href="{{ route("dashboard.appearance.pages.create") }}" class="btn btn-info w-100 mb-4"><i class="fa fa-plus"></i> New Page</a>
                 <button class="btn btn-danger btn-delete w-100 mb-4" type="button"
-                        data-url="{{ route("pages.destroy",$page->id) }}"
+                        data-url="{{ route("dashboard.appearance.pages.destroy",$page->id) }}"
                         data-name="{{  $page->name }}" data-token="{{ csrf_token() }}"
                         data-title="Are you sure to delete "
                         data-text="Delete {{ $page->title }}"
-                        data-back="{{ route("pages.index") }}">
+                        data-back="{{ route("dashboard.appearance.pages.index") }}">
                     <a><i class="fa fa-trash"></i> Delete</a>
                 </button>
 
@@ -285,7 +285,7 @@
 
                 $.ajax({
                     type:'POST',
-                    url: "{{ route("pages.update",$page->id) }}",
+                    url: "{{ route("dashboard.appearance.pages.update",$page->id) }}",
                     data: formData,
                     dataType: 'json',
                     contentType: false,

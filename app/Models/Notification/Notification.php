@@ -2,7 +2,7 @@
 
 namespace App\Models\Notification;
 
-use App\Models\Client\Client;
+use App\Models\User\Client;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

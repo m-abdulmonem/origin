@@ -8,7 +8,7 @@
 
             <div class="card">
                 <div class="card-header">
-                    <a class="btn btn-info" href="{{ route("sliders.create") }}"><i class="fa fa-plus"></i> Create Slider</a>
+                    <a class="btn btn-info" href="{{ route("dashboard.appearance.sliders.create") }}"><i class="fa fa-plus"></i> Create Slider</a>
 
                     <button class="btn btn-secondary btn-refresh"  type="button"><i class="fa fa-redo-alt"></i> Refresh</button>
                 </div>
@@ -51,7 +51,7 @@
                     {data: 'buttons', name: 'buttons'},
                     {data: 'html', name: 'html'},
                 ],
-                url: "{{ route("appearance.sliders.index") }}",
+                url: "{{ route("dashboard.appearance..sliders.json.index") }}",
                 actionColumnWidth: "250px",
             });
         </script>

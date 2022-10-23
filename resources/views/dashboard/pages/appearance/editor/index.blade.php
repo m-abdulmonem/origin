@@ -30,7 +30,7 @@
     @endpush
     <div class="row">
         <div class="col-8">
-            <form action="{{ route("appearance.editor.action") }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route("dashboard.appearance.editor.action") }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <textarea name="content" id="codeMirror" class="h-100"></textarea>
             </form>
@@ -132,7 +132,7 @@
                     if (result.isConfirmed) {
                         $.ajax({
                             type:'DELETE',
-                            url: "{{ route("appearance.editor.delete") }}",
+                            url: "{{ route("dashboard.appearance.editor.delete") }}",
                             contentType: "application/json",
                             processData: false,
                             data: JSON.stringify({
@@ -172,7 +172,7 @@
                 editor.getDoc().setValue(`loading file ${$(this).text()}`)
                 $.ajax({
                     type:'GET',
-                    url: "{{ route("appearance.editor.open.file") }}?path=" + path,
+                    url: "{{ route("dashboard.appearance.editor.open.file") }}?path=" + path,
                     contentType: false,
                     processData: false,
                     success:function(data) {
@@ -188,7 +188,7 @@
                 const path = $(this).data("path");
                 $.ajax({
                     type:'PUT',
-                    url: "{{ route("appearance.editor.action") }}",
+                    url: "{{ route("dashboard.appearance.editor.action") }}",
                     contentType: "application/json",
                     processData: false,
                     data: JSON.stringify({
@@ -210,7 +210,7 @@
                 editor.getDoc().setValue(`creating ${type} ${name}`)
                 $.ajax({
                     type:'POST',
-                    url: "{{ route("appearance.editor.create") }}",
+                    url: "{{ route("dashboard.appearance.editor.create") }}",
                     contentType: "application/json",
                     processData: false,
                     data: JSON.stringify({

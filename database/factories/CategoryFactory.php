@@ -2,11 +2,11 @@
 
 namespace Database\Factories;
 
-use App\Models\Product\Category\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Mabdulmonem\Uploader\Http\Models\Product\Category\Category;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Product\Category\Category>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\Mabdulmonem\Uploader\Http\Models\Product\Category\Category>
  */
 class CategoryFactory extends Factory
 {

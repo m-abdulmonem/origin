@@ -1,0 +1,15 @@
+{
+    "name": "mabdulmonem/admin-lte",
+    "autoload": {
+        "psr-4": {
+            "Mabdulmonem\\AdminLte\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Mohamed Abdel Al-Monem",
+            "email": "abuabdojoker22@gmail.com"
+        }
+    ],
+    "require": {}
+}

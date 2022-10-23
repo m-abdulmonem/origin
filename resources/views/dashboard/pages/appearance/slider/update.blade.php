@@ -1,6 +1,6 @@
 @extends("dashboard.layouts.app")
 @section("content")
-        <form action="{{ route("sliders.update",$slider->id) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route("dashboard.appearance.sliders.update",$slider->id) }}" method="POST" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-8">
                     @csrf
@@ -9,14 +9,14 @@
                         <div class="card-header">
                             <h3 class="card-title ">Slider content</h3>
                             <button class="btn btn-danger btn-delete float-right" type="button"
-                                    data-url="{{ route("sliders.destroy",$slider->id) }}"
+                                    data-url="{{ route("dashboard.appearance.sliders.destroy",$slider->id) }}"
                                     data-name="{{  $slider->name }}" data-token="{{ csrf_token() }}"
                                     data-title="Are you sure to delete "
                                     data-text="Delete {{ $slider->title }}"
-                                    data-back="{{ route("sliders.index") }}">
+                                    data-back="{{ route("dashboard.appearance.sliders.index") }}">
                                 <a><i class="fa fa-trash"></i> Delete</a>
                             </button>
-                            <a href="{{ route("sliders.create") }}" class="btn btn-info float-right ml-1 mr-1"><i class="fa fa-plus"></i> New Slider</a>
+                            <a href="{{ route("dashboard.appearance.sliders.create") }}" class="btn btn-info float-right ml-1 mr-1"><i class="fa fa-plus"></i> New Slider</a>
                             <button type="submit" class="btn btn-primary float-right "><i class="fa fa-save"></i> Save</button>
                         </div>
                         <!-- /.card-header -->

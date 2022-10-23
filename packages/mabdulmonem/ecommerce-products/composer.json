@@ -1,0 +1,15 @@
+{
+    "name": "",
+    "autoload": {
+        "psr-4": {
+            "Mabdulmonem\\EcommerceProducts\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Mohamed Abdel Al-Monem",
+            "email": "abuabdojoker22@gmail.com"
+        }
+    ],
+    "require": {}
+}

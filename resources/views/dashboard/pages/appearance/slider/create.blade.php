@@ -1,6 +1,6 @@
 @extends("dashboard.layouts.app")
 @section("content")
-    <form action="{{ route("sliders.store") }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route("dashboard.appearance.sliders.store") }}" method="POST" enctype="multipart/form-data">
         <div class="row">
             <div class="col-8">
                 @csrf

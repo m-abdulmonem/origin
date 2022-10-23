@@ -3,15 +3,13 @@
 namespace App\Http\Controllers\Dashboard\Services;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Dashboard\Services\CreateRequest;
-use App\Http\Requests\Dashboard\Services\UpdateRequest;
+use App\Http\Requests\Dashboard\Services\ServicesRequest;
 use App\Models\Service\Service;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class ServiceController extends Controller
 {
@@ -30,45 +28,45 @@ class ServiceController extends Controller
      *
      * @return Application|Factory|View
      */
-    public function index()
+    public function index(): View|Factory|Application
     {
-        $this->can("read");
+        $this->can("r");
 
         $data = [
             'title' => 'Services'
         ];
+
         return $this->view("index", $data);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param CreateRequest $request
+     * @param ServicesRequest $request
      * @return JsonResponse
      */
-    public function store(CreateRequest $request)
+    public function store(ServicesRequest $request): JsonResponse
     {
-        $this->can("create");
+        $this->any(['c','u']);
 
-        $service = service::create($request->all());
-
+        $service = service::updateOrCreate(['id' => $request->id],$request->all());
 
         return response()->json(['status' => 1, 'msg' => 'success', 'data' => $service]);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Remove the specified resource from storage.
      *
-     * @return Response
+     * @param Service $service
+     * @return JsonResponse
      */
-    public function create()
+    public function destroy(Service $service): JsonResponse
     {
-        $this->can("create");
+        $this->can("d");
 
-        $data = [
-            'title' => 'Create Service'
-        ];
-        return $this->view("create", $data);
+        $service->delete();
+
+        return response()->json(['status' => 1]);
     }
 
     public function json(Request $request)
@@ -77,80 +75,23 @@ class ServiceController extends Controller
             return datatables()->of(Service::orderByDesc("id")->get())
                 ->addIndexColumn()
                 ->addColumn('title', function ($data) {
-                    return "<a class='text-primary' href='" . route("services.edit", $data->id) . "'>" . $data->title . "</a>";
+                    return  $data->title;
+                })
+                ->addColumn('price', function ($data) {
+                    return $data->price . " EGP";
                 })
                 ->addColumn('description', function ($data) {
                     return "<span >" . $data->description . "</span>";
                 })
                 ->addColumn('action', function ($data) use ($request) {
-                    $route = route("services.edit", $data->id);
-                    $btn = "<a class='btn btn-info mr-1' title='" . trans("View") . "' href='" . url($data->title) . "'><i class='fa fa-edit'></i></a>";
-                    $btn .= "<a class='btn btn-primary mr-1' title='" . trans("Edit") . "' href='$route'><i class='fa fa-edit'></i></a>";
-                    $btn .= btn_delete("services", $data, "title");
+                    $btn = "<div class='btn btn-primary mr-1 btn-edit-service' title='" . trans("Edit") . "' data-data='".$data."'><i class='fa fa-edit'></i></div>";
+                    $btn .= btn_delete("dashboard.services", $data, "title");
                     return $btn;
                 })
                 ->rawColumns(['action', 'title', 'description'])
                 ->make(true);
         } //end if cond
+
         return abort(404);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param Service $service
-     * @return Response
-     */
-    public function show(Service $service)
-    {
-        abort(404);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param Service $service
-     * @return Response
-     */
-    public function edit(Service $service)
-    {
-        $this->can("update");
-
-        $data = [
-            'title' => trans('Update ', ['title' => $service->title]),
-            'service' => $service
-        ];
-
-        return $this->view("update", $data);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param UpdateRequest $request
-     * @param Service $service
-     * @return Response
-     */
-    public function update(UpdateRequest $request, Service $service)
-    {
-        $this->can("update");
-
-        $service->update($request->all());
-
-        return $this->back("Service", $service->title, true);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Service $service
-     * @return Response
-     */
-    public function destroy(Service $service)
-    {
-        $this->can("delete");
-        $service->delete();
-
-        return response()->json(['status' => 1]);
     }
 }

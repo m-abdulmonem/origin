@@ -9,7 +9,6 @@
             <div class="card">
                 <div class="card-header">
                     <button class="btn btn-info" type="button" data-toggle="modal" data-target="#serviceModel"><i class="fa fa-plus"></i> {{ __("Create Service") }}</button>
-
                     <button class="btn btn-secondary btn-refresh"  type="button"><i class="fa fa-redo-alt"></i> {{ __("Refresh") }}</button>
                 </div>
                 <!-- /.card-header -->
@@ -19,6 +18,7 @@
                         <tr>
                             <th>#</th>
                             <th>{{ __("Title")}}</th>
+                            <th>{{ __("Price")}}</th>
                             <th>{{ __("Description")}}</th>
                             <th>{{ __("Actions") }}</th>
                         </tr>
@@ -42,9 +42,10 @@
             $("#servicesTable").table({
                 columns: [
                     {data: 'title', name: 'title'},
+                    {data: 'price', name: 'price'},
                     {data: 'description', name: 'description'},
                 ],
-                url: "{{ route("services.json.index") }}",
+                url: "{{ route("dashboard.services.json.index") }}",
                 actionColumnWidth: "250px",
             });
         </script>

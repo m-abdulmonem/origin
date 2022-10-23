@@ -14,7 +14,35 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+
+
+
+    echo get_dashboard_menu();
+
+    $data = [
+        'price' => [
+            [
+                '1',
+                '150'
+            ],
+            [
+                '1',
+                '200'
+            ],
+            [
+                '1',
+                '300'
+            ],
+        ]
+    ];
+
+    foreach ($data as $datum){
+        foreach ($datum as $item){
+            echo "input : " . $item[0] . ", price : " .  $item[1] . "<br>";
+        }
+    }
+
+//    return view('welcome');
 });
 
 
@@ -24,4 +52,4 @@ Route::prefix("dashboard")->name("dashboard.")->group(function ()
     Auth::routes(['register' => false]);
 });
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

@@ -4,7 +4,7 @@
         <!-- Select2 -->
         <link rel="stylesheet" href="{{ admin_assets("select2.min.css") }}">
     @endpush
-    <form action="{{ route("menus.store") }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route("dashboard.appearance.menus.store") }}" method="POST" enctype="multipart/form-data">
         <div class="row">
             <div class="col-8 ">
                 @csrf
@@ -37,7 +37,7 @@
                         <!-- ./col-12 -->
                         <div class="col-12">
                             <div class="form-group ">
-                                @php $menus = Menus::all()->pluck("title","id") @endphp
+                                @php $menus = \App\Models\Appearance\Menus::all()->pluck("title","id") @endphp
                                 <label for="parent">Select Parent Menu</label>
                                 <select name="parent" id="parent" class="form-control @error('parent') is-invalid @enderror">
                                     <option value="">Select Parent Menu</option>

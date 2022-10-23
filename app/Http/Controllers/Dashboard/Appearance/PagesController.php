@@ -12,6 +12,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class PagesController extends Controller
 {
@@ -149,11 +150,12 @@ class PagesController extends Controller
 
     public function json(Request  $request)
     {
+
         if ($request->ajax()) {
             return datatables()->of(Page::orderByDesc("id")->get())
                 ->addIndexColumn()
                 ->addColumn('title', function ($data) {
-                    return "<a class='text-primary' href='".route("pages.edit",$data->id)."'>".$data->title."</a>";
+                    return "<a class='text-primary' href='".route("dashboard.appearance.pages.edit",$data->id)."'>".$data->title."</a>";
                 })
                 ->addColumn('image', function ($data) {
                     return  "<img src='" .asset($data->featured_image). "' alt='page image' class='w-25'>";
@@ -172,9 +174,9 @@ class PagesController extends Controller
 //                    return "<a href='".route("users.show",$data->user->id)."' class='text-blue'>".$data->user->name."</a>";
                 })
                 ->addColumn('action', function($data) use ($request){
-                    $route = route("pages.edit",$data->id);
+                    $route = route("dashboard.appearance.pages.edit",$data->id);
                     $btn = "<a class='btn btn-primary mr-1' title='Edit Page' href='$route'><i class='fa fa-edit'></i></a>";
-                    $btn .= btn_delete("pages",$data,"title");
+                    $btn .= btn_delete("dashboard.appearance.pages",$data,"title");
                     return $btn;
                 })
                 ->rawColumns(['action','title','image','status','user','parent'])

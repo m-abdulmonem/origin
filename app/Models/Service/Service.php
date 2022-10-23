@@ -3,11 +3,11 @@
 namespace App\Models\Service;
 
 use App\Models\Appearance\Page;
-use App\Models\Client\Client;
-
 use App\Models\User;
+use App\Models\User\Client;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+
 
 class Service extends Model
 {
@@ -21,6 +21,7 @@ class Service extends Model
      */
     protected $fillable = [
         'title',
+        'price',
         'description',
         'icon',
     ];

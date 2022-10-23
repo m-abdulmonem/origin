@@ -12,9 +12,9 @@
             <div class="col-12">
                 @csrf
                 <div id="gjs" style="height:1000px !important; overflow:hidden;">
-                    @include("frontend.layouts.header")
-                    @include("frontend.pages.home.home")
-                    @include("frontend.layouts.footer")
+{{--                    @include("frontend.layouts.header")--}}
+{{--                    @include("frontend.pages.home.home")--}}
+{{--                    @include("frontend.layouts.footer")--}}
                 </div>
             </div>
             <!-- /.col -->
@@ -194,7 +194,7 @@
                 formData.append("content",content)
                 $.ajax({
                     type:'POST',
-                    url: "{{ route("pages.store") }}",
+                    url: "{{ route("dashboard.appearance.pages.store") }}",
                     data: formData,
                     dataType: "JSON",
                     processData: false,

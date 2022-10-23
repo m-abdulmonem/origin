@@ -3,7 +3,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Portfolio</h4>
+                <h4 class="modal-title">{{ __("Services") }}</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -14,8 +14,19 @@
                     <div class="col-12">
                         <div class="form-group ">
                             <label for="title">{{ __("Title") }}</label>
-                            <input type="text" class="form-control " id="title" placeholder="{{ __("Title") }}" name="title"
+                            <input type="text" class="form-control " id="title" placeholder="{{ __("Title") }}"
+                                   name="title"
                                    value="{{ old("title") }}" required>
+                            <div class="alert alert-danger d-none" style="display: none"></div>
+                        </div>
+                    </div>
+                    <!-- ./col-12 -->
+                    <div class="col-12">
+                        <div class="form-group ">
+                            <label for="price">{{ __("Price") }}</label>
+                            <input type="text" class="form-control " id="price" placeholder="{{ __("Price") }}"
+                                   name="price"
+                                   value="{{ old("price") }}" required>
                             <div class="alert alert-danger d-none" style="display: none"></div>
                         </div>
                     </div>
@@ -44,104 +55,89 @@
 
 @push("js")
     <script>
-            let id, body = $("body"),
-                $btnSubmit = $("button[type=submit]"),
-                $table = $("#servicesTable"),
-                $form = $("form"),
-                $title = $("#title"),
-                $description = $("#description"),
-                $method = `<input type="hidden" name="_method" value="PUT">`,
-                $model = $("#serviceModel")
+        let body = $("body"),
+            $btnSubmit = $("button[type=submit]"),
+            $table = $("#servicesTable"),
+            $form = $("form"),
+            $model = $("#serviceModel")
 
 
-            $form.submit(function (e) {
-                e.preventDefault();
-                let formData = new FormData(this);
+        $form.submit(function (e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+            ajax(formData)
+        })
 
-                if ($btnSubmit.data("method") === "put") {
-                    ajax(`{{ url("dashboard/services") }}/${$btnSubmit.data("id")}`, "put")
-                } else {
-                    ajax("{{ route("services.store") }}", "POST", formData)
+
+        body.on("click", ".btn-edit-service", function () {
+
+            resetForm();
+
+            const data = JSON.parse(JSON.stringify($(this).data("data")));
+
+            $form.append(`<input type=hidden value=${data.id} name="id" >`)
+
+            for (const [key, value] of Object.entries(data)) {
+                if (key !== "deleted_at") {
+                    $(`#${key}`).val(value)
                 }
-            })
-
-
-
-            body.on("click", ".btn-edit-menu", function () {
-
-                $btnSubmit.attr("data-method", "put")
-                    .attr("data-id", $(this).data("id"));
-
-                $("form").prepend($method);
-
-                var data = JSON.parse(JSON.stringify($(this).data("data")));
-
-
-                for (const [key, value] of Object.entries(data)) {
-                    if (key !== "deleted_at") {
-                        $(`#${key}`).val(value)
-                    }
-                }
-
-                $model.modal("show");
-            });
-
-            $title.keyup(function () {
-                if ($(this).length > 0) {
-                    $(this).removeClass("is-invalid").next(".alert").hide();
-                }
-            })
-
-            function ajax(url, method, formData = null) {
-                $.ajax({
-                    type: method,
-                    url: url,
-                    data: method == "put" ? JSON.stringify({
-                        title: $title.val(),
-                        description: $description.val(),
-                        _method: method
-                    }) : formData,
-                    dataType: "JSON",
-                    processData: false,
-                    contentType: method === "put" ? "application/json" : false,
-                    headers: {
-                        'X-CSRF-TOKEN': "{{ csrf_token() }}"
-                    },
-                    success: function (data) {
-                        if (data.status === 1) {
-                            Swal.fire(
-                                'Congratulation',
-                                data.message,
-                                'success'
-                            )
-                            if ($btnSubmit.data("method") === "put") {
-                                $btnSubmit.removeAttr("data-method");
-                                $("input[name=_method]").remove();
-                                $title.val("")
-                            }
-                            $model.modal("hide");
-                            $table.DataTable().draw();
-                            $form[0].reset();
-                            $form.trigger("reset");
-                        }
-                    },
-                    error: function (data, textStatus, jqXHR) {
-                        const response = data.responseJSON;
-                        console.log(response)
-                        if (response) {
-                            console.log(response.errors)
-                            for (const [key, value] of Object.entries(response.errors)) {
-                                $(`#${key}`)
-                                    .addClass("is-invalid")
-                                    .parent()
-                                    .find(".alert")
-                                    .removeClass("d-none")
-                                    .text(value[0])
-                                    .show()
-                            }
-                        }
-                    },
-                });
             }
-        </script>
+
+            $model.modal("show");
+        });
+
+
+        $(".btn-add").click(function () {
+            resetForm()
+        })
+
+
+        function resetForm() {
+            $form[0].reset();
+            $form.trigger("reset");
+            $('input[name=id]').remove();
+        }
+
+        function ajax(formData = null) {
+            $.ajax({
+                type: "POST",
+                url: "{{ route("dashboard.services.store") }}",
+                data: formData,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                cache: false,
+                headers: {
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                },
+                success: function (data) {
+                    if (data.status === 1) {
+                        Swal.fire(
+                            'Congratulation',
+                            data.message,
+                            'success'
+                        )
+
+                        $model.modal("hide");
+                        $table.DataTable().draw();
+                        resetForm();
+                    }
+                },
+                error: function (data, textStatus, jqXHR) {
+                    const response = data.responseJSON;
+                    if (response) {
+                        for (const [key, value] of Object.entries(response.errors)) {
+                            $(`#${key}`)
+                                .addClass("is-invalid")
+                                .parent()
+                                .find(".alert")
+                                .removeClass("d-none")
+                                .text(value[0])
+                                .show()
+                        }
+                    }
+                },
+            });
+        }
+    </script>
 @endpush

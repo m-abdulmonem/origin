@@ -6,13 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\DB;
+
 
 class PermissionsController extends Controller
 {
-    private $admin;
+    private User $admin;
 
     public function __construct()
     {
@@ -24,7 +23,7 @@ class PermissionsController extends Controller
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         $data = Config::get("permissions");
 
@@ -38,6 +37,7 @@ class PermissionsController extends Controller
                 'display_name' => $ucRole,
                 'description' => "allow $role"
             ]);
+
             $this->admin->attachRole($createRole);
 
             $this->createPermission($permissions, $createRole);
@@ -54,7 +54,7 @@ class PermissionsController extends Controller
     {
         foreach ($permissions as $name => $permission) {
             foreach ($permission as $perm) {
-                $permName = $this->handlePermiisionName($perm);
+                $permName = $this->handlePermissionName($perm);
 
                 $createdPerm = Permission::create([
                     'name' => "$permName-$name",
@@ -68,7 +68,7 @@ class PermissionsController extends Controller
         }
     }
 
-    private function handlePermiisionName($perm)
+    private function handlePermissionName($perm): array|string
     {
         $perms = ['c' => 'create', 'r' => 'read', 'u' => 'update', 'd' => 'delete', 'v' => 'view'];
 
